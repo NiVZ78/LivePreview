@@ -95,5 +95,6 @@ module.exports = [
         "allowGray": false
       },
     ]
-  }
+  },
+  { "type": "submit", "defaultValue": "Save" }
 ]
