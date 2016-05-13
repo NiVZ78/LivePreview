@@ -3,6 +3,7 @@
 Two methods (in seperate branches) for providing Live Previews of your watchface/watchapp to the user when allowing them to use custom color pickers.
 
 PNG Method by @NiVZ
+
 SVG Method Method by @Gregoiresage
 
 Brief Instructions - These will be updated later
