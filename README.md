@@ -1,5 +1,10 @@
 # LivePreview
 
+Two methods (in seperate branches) for providing Live Previews of your watchface/watchapp to the user when allowing them to use custom color pickers.
+
+PNG Method by @NiVZ
+SVG Method Method by @Gregoiresage
+
 Brief Instructions - These will be updated later
 
 To use the PNG version you will need:
@@ -10,7 +15,7 @@ To use the PNG version you will need:
 
 1. First take a screenshot of your watchface/watchapp and save as a .png
 2. Load it into your favourite image editing software
-3. You need to give each element that can be colored seperately a unique color (eg background RED, hour hand GREEN, minute hand blue)
+3. You need to give each element that can be colored seperately a unique color (eg background RED, hour hand GREEN, minute hand BLUE)
 4. If multiple elements need to be set using the same color picker (eg button labels for Light, Prev, Next then make these the same color)
 5. Save the image
 6. Convert the image to Base 64
