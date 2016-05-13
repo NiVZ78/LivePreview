@@ -8,23 +8,22 @@ To use the PNG version you will need:
 - Program or website to convert PNG to Base 64
 - Cloudpebble or Local SDK
 
-First take a screenshot of your watchface/watchapp and save as a .png
-Load it into your favourite image editing software
-You need to give each element that can be colored seperately a unique color (eg background RED, hour hand GREEN, minute hand blue)
-If multiple elements need to be set using the same color picker (eg button labels for Light, Prev, Next then make these the same color)
-Save the image
-Convert the image to Base 64
-
-Open your project in Cloudpebble or Local SDK
-Create your Clay configuration as normal, but make sure to add the following section above your color pickers:
+1. First take a screenshot of your watchface/watchapp and save as a .png
+2. Load it into your favourite image editing software
+3. You need to give each element that can be colored seperately a unique color (eg background RED, hour hand GREEN, minute hand blue)
+4. If multiple elements need to be set using the same color picker (eg button labels for Light, Prev, Next then make these the same color)
+5. Save the image
+6. Convert the image to Base 64
+7. Open your project in Cloudpebble or Local SDK
+8. Create your Clay configuration as normal, but make sure to add the following section above your color pickers:
 {
     "type": "text",
     "id": "canvas",
     "defaultValue": '<canvas id="canvas" width="144" height="168" ></canvas>'
 }
-Edit the custom-clay.js
-Replace the imgB64 string with the string for your Base 64 encoded image
-Edit the 'originalColor' object giving it the KEY name for your clay config color pickers, and the hex code of the unique color you used to identify that element in the Base 64 encoded image.
+9. Edit the custom-clay.js
+10. Replace the imgB64 string with the string for your Base 64 encoded image
+11. Edit the 'originalColor' object giving it the KEY name for your clay config color pickers, and the hex code of the unique color you used to identify that element in the Base 64 encoded image.
 
 That's it!
 
