@@ -11,12 +11,12 @@ module.exports = [
       {
         "type": "text",
         "id": "canvas",
-        "defaultValue": '<canvas id="canvas" width="144" height="168" ></canvas>'
+        "defaultValue": "<canvas id=\"canvas\" width=\"144\" height=\"168\" ></canvas>"
       },
       {
         "type": "color",
         "id": "bgcolor",
-        "appKey": "KEY_bgcolor",
+        "messageKey": "bgcolor",
         "label": "Background Color",
         "defaultValue": "000000",
         "sunlight": false,
@@ -25,7 +25,7 @@ module.exports = [
       {
         "type": "color",
         "id": "resistcolor",
-        "appKey": "KEY_resistcolor",
+        "messageKey": "resistcolor",
         "label": "Water/Splash Resist Color",
         "defaultValue": "00aaff",
         "sunlight": false,
@@ -34,7 +34,7 @@ module.exports = [
       {
         "type": "color",
         "id": "bordercolor",
-        "appKey": "KEY_bordercolor",
+        "messageKey": "bordercolor",
         "label": "Border Color",
         "defaultValue": "ffffff",
         "sunlight": false,
@@ -43,7 +43,7 @@ module.exports = [
       {
         "type": "color",
         "id": "lcdbgcolor",
-        "appKey": "KEY_lcdbgcolor",
+        "messageKey": "lcdbgcolor",
         "label": "LCD Background Color",
         "defaultValue": "aaffff",
         "sunlight": false,
@@ -52,7 +52,7 @@ module.exports = [
       {
         "type": "color",
         "id": "lcdtextcolor",
-        "appKey": "KEY_lcdtextcolor",
+        "messageKey": "lcdtextcolor",
         "label": "LCD Text Color",
         "defaultValue": "000000",
         "sunlight": false,
@@ -61,7 +61,7 @@ module.exports = [
       {
         "type": "color",
         "id": "labelcolor",
-        "appKey": "KEY_labelcolor",
+        "messageKey": "labelcolor",
         "label": "Label Color",
         "defaultValue": "ffffff",
         "sunlight": false,
@@ -70,7 +70,7 @@ module.exports = [
       {
         "type": "color",
         "id": "alarmcolor",
-        "appKey": "KEY_alarmcolor",
+        "messageKey": "alarmcolor",
         "label": "Alarm Chrono Color",
         "defaultValue": "aaaa55",
         "sunlight": false,
@@ -79,7 +79,7 @@ module.exports = [
       {
         "type": "color",
         "id": "shockcolor",
-        "appKey": "KEY_shockcolor",
+        "messageKey": "shockcolor",
         "label": "Shock Resist Color",
         "defaultValue": "aaaa55",
         "sunlight": false,
@@ -88,12 +88,12 @@ module.exports = [
       {
         "type": "color",
         "id": "shockarrowcolor",
-        "appKey": "KEY_shockarrowcolor",
+        "messageKey": "shockarrowcolor",
         "label": "Shock Arrow Color",
         "defaultValue": "aa0000",
         "sunlight": false,
         "allowGray": false
-      },
+      }
     ]
   },
   { "type": "submit", "defaultValue": "Save" }

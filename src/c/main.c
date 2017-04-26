@@ -1,6 +1,9 @@
 #include "pebble.h"
+#include "enamel.h"
+#include <pebble-events/pebble-events.h>
 
-  
+static EventHandle s_window_event_handle;
+
 // Set the maximum no of images - this should be the number of images you have in the resources
 static int max_images = 1;
  
@@ -82,6 +85,94 @@ static void click_config_provider(void *context) {
 }
 
 
+int get_num_palette_colors(GBitmap *b){
+
+	GBitmapFormat format = gbitmap_get_format(b);
+
+	switch (format) {
+		case GBitmapFormat1Bit: return 0;
+		case GBitmapFormat8Bit: return 0;
+		case GBitmapFormat1BitPalette: return 2;
+		case GBitmapFormat2BitPalette: return 4;
+		case GBitmapFormat4BitPalette: return 16;
+
+		default: return 0;
+	}
+
+}
+
+
+void replace_gbitmap_color(GColor color_to_replace, GColor replace_with_color, GBitmap *im, BitmapLayer *bml){
+
+	//First determine what the number of colors in the palette
+	int num_palette_items = get_num_palette_colors(im);
+
+	#ifdef SHOW_APP_LOGS
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Palette has %d items", num_palette_items);
+	#endif
+
+	//Get the gbitmap's current palette
+	GColor *current_palette = gbitmap_get_palette(im);
+
+	//Iterate through the palette finding the color we want to replace and replacing 
+	//it with the new color
+	#ifdef SHOW_APP_LOGS
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "--Replace Color Start--");
+	#endif 
+
+	for(int i = 0; i < num_palette_items; i++){
+
+		#ifdef SHOW_APP_LOGS
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "Palette[%d] = %s (alpha:%d)", i, get_gcolor_text(current_palette[i]),(current_palette[i].argb >>6));
+		#endif
+
+		if ((color_to_replace.argb & 0x3F)==(current_palette[i].argb & 0x3F)){
+
+			current_palette[i].argb = (current_palette[i].argb & 0xC0)| (replace_with_color.argb & 0x3F);
+			#ifdef SHOW_APP_LOGS
+			APP_LOG(APP_LOG_LEVEL_DEBUG, "-------[%d] replaced with %s (alpha:%d)", i, get_gcolor_text(current_palette[i]),(current_palette[i].argb >>6));
+			#endif
+			
+		}
+
+	}
+
+	#ifdef SHOW_APP_LOGS
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "--Replace Color End--");
+	#endif
+
+	//Mark the bitmaplayer dirty
+	if(bml != NULL){
+		layer_mark_dirty(bitmap_layer_get_layer(bml));
+	}
+
+}
+
+static void change_colors(){
+  
+  // reload the image to reset the colours
+  change_image();
+  
+  // change to the user chosen colours
+  replace_gbitmap_color(GColorBlack, enamel_get_bgcolor(), s_mockup_image, s_mockup_layer);
+  replace_gbitmap_color(GColorVividCerulean, enamel_get_resistcolor(), s_mockup_image, s_mockup_layer);
+  replace_gbitmap_color(GColorPastelYellow, enamel_get_bordercolor(), s_mockup_image, s_mockup_layer);
+  replace_gbitmap_color(GColorCeleste, enamel_get_lcdbgcolor(), s_mockup_image, s_mockup_layer);
+  replace_gbitmap_color(GColorOxfordBlue, enamel_get_lcdtextcolor(), s_mockup_image, s_mockup_layer);
+  replace_gbitmap_color(GColorWhite, enamel_get_labelcolor(), s_mockup_image, s_mockup_layer);
+  replace_gbitmap_color(GColorLimerick, enamel_get_alarmcolor(), s_mockup_image, s_mockup_layer);
+  replace_gbitmap_color(GColorBrass, enamel_get_shockcolor(), s_mockup_image, s_mockup_layer);
+  replace_gbitmap_color(GColorDarkCandyAppleRed, enamel_get_shockarrowcolor(), s_mockup_image, s_mockup_layer);
+  
+}
+
+
+static void enamel_settings_received_window_handler(void *context){
+  APP_LOG(0, "Settings received");
+  
+  change_colors();
+                        
+}
 
 
 // WINDOW LOAD
@@ -104,6 +195,8 @@ static void main_window_load(Window *window) {
   
   // Load the first image
   change_image();
+  
+  change_colors();
   
 }
 
@@ -138,12 +231,28 @@ static void init(void) {
   // Show the Window on the watch, with animated=true
   window_stack_push(s_main_window, true);
     
+  
+  // Initialize Enamel to register App Message handlers and restores settings
+  enamel_init();
+  
+   // Subscribe a handler for a window
+  s_window_event_handle = enamel_settings_received_subscribe(enamel_settings_received_window_handler, s_main_window);
+  
+  // call pebble-events app_message_open function
+  events_app_message_open(); 
+  
 }
 
 
 // DEINIT
 static void deinit(void) {
 
+  // Unsubscribe from Enamel events
+  enamel_settings_received_unsubscribe(s_window_event_handle);
+  
+  // Deinit Enamel to unregister App Message handlers and save settings
+  enamel_deinit();
+  
   // Destroy the main window
   window_destroy(s_main_window);
   

@@ -1,0 +1,49 @@
+{
+    "author": "NiVZ",
+    "dependencies": {
+        "enamel": "^1.0.0",
+        "pebble-clay": "^1.0.0"
+    },
+    "keywords": [],
+    "name": "claylivepreview",
+    "pebble": {
+        "capabilities": [
+            "configurable"
+        ],
+        "displayName": "ClayLivePreview",
+        "enableMultiJS": true,
+        "messageKeys": [
+            "bgcolor",
+            "resistcolor",
+            "bordercolor",
+            "lcdbgcolor",
+            "lcdtextcolor",
+            "labelcolor",
+            "alarmcolor",
+            "shockcolor",
+            "shockarrowcolor"
+        ],
+        "projectType": "native",
+        "resources": {
+            "media": [
+                {
+                    "file": "images/download.png",
+                    "name": "IMAGE_MOCKUP_1",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                }
+            ]
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "aplite",
+            "basalt",
+            "chalk"
+        ],
+        "uuid": "1278bdac-0764-40fb-82ec-0a615c89fb12",
+        "watchapp": {
+            "watchface": true
+        }
+    },
+    "version": "1.0.0"
+}
