@@ -18,8 +18,8 @@ module.exports = [
         "id": "bgcolor",
         "messageKey": "bgcolor",
         "label": "Background Color",
-        "defaultValue": "000000",
-        "sunlight": false,
+        "defaultValue": "000055",
+        "sunlight": true,
         "allowGray": false
       },
       {
@@ -28,7 +28,7 @@ module.exports = [
         "messageKey": "resistcolor",
         "label": "Water/Splash Resist Color",
         "defaultValue": "00aaff",
-        "sunlight": false,
+        "sunlight": true,
         "allowGray": false
       },
       {
@@ -37,7 +37,7 @@ module.exports = [
         "messageKey": "bordercolor",
         "label": "Border Color",
         "defaultValue": "ffffff",
-        "sunlight": false,
+        "sunlight": true,
         "allowGray": false
       },
       {
@@ -46,7 +46,7 @@ module.exports = [
         "messageKey": "lcdbgcolor",
         "label": "LCD Background Color",
         "defaultValue": "aaffff",
-        "sunlight": false,
+        "sunlight": true,
         "allowGray": false
       },
       {
@@ -54,8 +54,8 @@ module.exports = [
         "id": "lcdtextcolor",
         "messageKey": "lcdtextcolor",
         "label": "LCD Text Color",
-        "defaultValue": "000000",
-        "sunlight": false,
+        "defaultValue": "000055",
+        "sunlight": true,
         "allowGray": false
       },
       {
@@ -64,7 +64,7 @@ module.exports = [
         "messageKey": "labelcolor",
         "label": "Label Color",
         "defaultValue": "ffffff",
-        "sunlight": false,
+        "sunlight": true,
         "allowGray": false
       },
       {
@@ -73,7 +73,7 @@ module.exports = [
         "messageKey": "alarmcolor",
         "label": "Alarm Chrono Color",
         "defaultValue": "aaaa55",
-        "sunlight": false,
+        "sunlight": true,
         "allowGray": false
       },
       {
@@ -82,7 +82,7 @@ module.exports = [
         "messageKey": "shockcolor",
         "label": "Shock Resist Color",
         "defaultValue": "aaaa55",
-        "sunlight": false,
+        "sunlight": true,
         "allowGray": false
       },
       {
@@ -91,7 +91,7 @@ module.exports = [
         "messageKey": "shockarrowcolor",
         "label": "Shock Arrow Color",
         "defaultValue": "aa0000",
-        "sunlight": false,
+        "sunlight": true,
         "allowGray": false
       }
     ]

@@ -2,6 +2,26 @@
 #include "enamel.h"
 #include <pebble-events/pebble-events.h>
 
+const char * GColorsNames[]= {
+ "GColorBlack", "GColorOxfordBlue", "GColorDukeBlue", "GColorBlue", 
+ "GColorDarkGreen", "GColorMidnightGreen", "GColorCobaltBlue", "GColorBlueMoon", 
+ "GColorIslamicGreen", "GColorJaegerGreen", "GColorTiffanyBlue", "GColorVividCerulean", 
+ "GColorGreen", "GColorMalachite", "GColorMediumSpringGreen", "GColorCyan", 
+ "GColorBulgarianRose", "GColorImperialPurple", "GColorIndigo", "GColorElectricUltramarine", 
+ "GColorArmyGreen", "GColorDarkGray", "GColorLiberty", "GColorVeryLightBlue", 
+ "GColorKellyGreen", "GColorMayGreen", "GColorCadetBlue", "GColorPictonBlue",
+ "GColorBrightGreen", "GColorScreaminGreen", "GColorMediumAquamarine", "GColorElectricBlue",
+ "GColorDarkCandyAppleRed", "GColorJazzberryJam", "GColorPurple", "GColorVividViolet",
+ "GColorWindsorTan", "GColorRoseVale", "GColorPurpureus", "GColorLavenderIndigo",
+ "GColorLimerick", "GColorBrass", "GColorLightGray", "GColorBabyBlueEyes",
+ "GColorSpringBud", "GColorInchworm", "GColorMintGreen", "GColorCeleste",
+ "GColorRed", "GColorFolly", "GColorFashionMagenta", "GColorMagenta",
+ "GColorOrange", "GColorSunsetOrange", "GColorBrilliantRose", "GColorShockingPink",
+ "GColorChromeYellow", "GColorRajah", "GColorMelon", "GColorRichBrilliantLavender",
+ "GColorYellow", "GColorIcterine", "GColorPastelYellow", "GColorWhite"
+};
+
+
 static EventHandle s_window_event_handle;
 
 // Set the maximum no of images - this should be the number of images you have in the resources
@@ -24,6 +44,33 @@ static Layer *s_main_window_layer;
 static GBitmap *s_mockup_image;
 static BitmapLayer *s_mockup_layer;
 
+static GColor *original_palette;
+static GColor *custom_palette;
+
+int get_num_palette_colors(GBitmap *b){
+
+	GBitmapFormat format = gbitmap_get_format(b);
+
+	switch (format) {
+		case GBitmapFormat1Bit: return 0;
+		case GBitmapFormat8Bit: return 0;
+		case GBitmapFormat1BitPalette: return 2;
+		case GBitmapFormat2BitPalette: return 4;
+		case GBitmapFormat4BitPalette: return 16;
+
+		default: return 0;
+	}
+
+}
+
+
+const char* get_gcolor_text(GColor m_color){
+	if(gcolor_equal(m_color, GColorClear))
+		return "GColorClear";
+	return GColorsNames[m_color.argb & 0x3F];
+}
+
+
 
 static void change_image(){
 
@@ -33,7 +80,7 @@ static void change_image(){
   gbitmap_destroy(s_mockup_image);
   
   s_mockup_image = gbitmap_create_with_resource(MOCKUP_IMAGE_ID[image_no]);
-  
+    
   bitmap_layer_set_bitmap(s_mockup_layer, s_mockup_image);
     
 }
@@ -85,22 +132,6 @@ static void click_config_provider(void *context) {
 }
 
 
-int get_num_palette_colors(GBitmap *b){
-
-	GBitmapFormat format = gbitmap_get_format(b);
-
-	switch (format) {
-		case GBitmapFormat1Bit: return 0;
-		case GBitmapFormat8Bit: return 0;
-		case GBitmapFormat1BitPalette: return 2;
-		case GBitmapFormat2BitPalette: return 4;
-		case GBitmapFormat4BitPalette: return 16;
-
-		default: return 0;
-	}
-
-}
-
 
 void replace_gbitmap_color(GColor color_to_replace, GColor replace_with_color, GBitmap *im, BitmapLayer *bml){
 
@@ -150,19 +181,48 @@ void replace_gbitmap_color(GColor color_to_replace, GColor replace_with_color, G
 
 static void change_colors(){
   
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "%s", "Changing colors");
+  
+  // Reset our custom palette to the original palette
+  //custom_palette = original_palette;
+
+/*  
+[DEBUG] main.c:189: GColorBlack
+[DEBUG] main.c:189: GColorWhite
+[DEBUG] main.c:189: GColorVividCerulean
+[DEBUG] main.c:189: GColorPastelYellow
+[DEBUG] main.c:189: GColorCeleste
+[DEBUG] main.c:189: GColorOxfordBlue
+[DEBUG] main.c:189: GColorBrass
+[DEBUG] main.c:189: GColorLimerick
+[DEBUG] main.c:189: GColorDarkCandyAppleRed
+*/  
+  window_set_background_color(s_main_window,enamel_get_bgcolor());
+  original_palette[0] = enamel_get_bgcolor();
+  original_palette[1] = enamel_get_labelcolor();
+  original_palette[2] = enamel_get_resistcolor();
+  original_palette[3] = enamel_get_bordercolor();
+  original_palette[4] = enamel_get_lcdbgcolor();
+  original_palette[5] = enamel_get_lcdtextcolor();
+  original_palette[6] = enamel_get_shockcolor();
+  original_palette[7] = enamel_get_alarmcolor();
+  original_palette[8] = enamel_get_shockarrowcolor();
+  
+  layer_mark_dirty(s_main_window_layer);
   // reload the image to reset the colours
-  change_image();
+  //change_image();
+  //gbitmap_set_palette(s_mockup_image, custom_palette, false);
   
   // change to the user chosen colours
-  replace_gbitmap_color(GColorBlack, enamel_get_bgcolor(), s_mockup_image, s_mockup_layer);
-  replace_gbitmap_color(GColorVividCerulean, enamel_get_resistcolor(), s_mockup_image, s_mockup_layer);
-  replace_gbitmap_color(GColorPastelYellow, enamel_get_bordercolor(), s_mockup_image, s_mockup_layer);
-  replace_gbitmap_color(GColorCeleste, enamel_get_lcdbgcolor(), s_mockup_image, s_mockup_layer);
-  replace_gbitmap_color(GColorOxfordBlue, enamel_get_lcdtextcolor(), s_mockup_image, s_mockup_layer);
-  replace_gbitmap_color(GColorWhite, enamel_get_labelcolor(), s_mockup_image, s_mockup_layer);
-  replace_gbitmap_color(GColorLimerick, enamel_get_alarmcolor(), s_mockup_image, s_mockup_layer);
-  replace_gbitmap_color(GColorBrass, enamel_get_shockcolor(), s_mockup_image, s_mockup_layer);
-  replace_gbitmap_color(GColorDarkCandyAppleRed, enamel_get_shockarrowcolor(), s_mockup_image, s_mockup_layer);
+  //replace_gbitmap_color(GColorBlack, enamel_get_bgcolor(), s_mockup_image, s_mockup_layer);
+  //replace_gbitmap_color(GColorVividCerulean, enamel_get_resistcolor(), s_mockup_image, s_mockup_layer);
+  //replace_gbitmap_color(GColorPastelYellow, enamel_get_bordercolor(), s_mockup_image, s_mockup_layer);
+  //replace_gbitmap_color(GColorCeleste, enamel_get_lcdbgcolor(), s_mockup_image, s_mockup_layer);
+  //replace_gbitmap_color(GColorOxfordBlue, enamel_get_lcdtextcolor(), s_mockup_image, s_mockup_layer);
+  //replace_gbitmap_color(GColorWhite, enamel_get_labelcolor(), s_mockup_image, s_mockup_layer);
+  //replace_gbitmap_color(GColorLimerick, enamel_get_alarmcolor(), s_mockup_image, s_mockup_layer);
+  //replace_gbitmap_color(GColorBrass, enamel_get_shockcolor(), s_mockup_image, s_mockup_layer);
+  //replace_gbitmap_color(GColorDarkCandyAppleRed, enamel_get_shockarrowcolor(), s_mockup_image, s_mockup_layer);
   
 }
 
@@ -190,6 +250,11 @@ static void main_window_load(Window *window) {
   // Set the bitmap layer to align the image in the center - useful if using the same 144x168 rect image on round
   bitmap_layer_set_alignment(s_mockup_layer, GAlignCenter);
   
+  s_mockup_image = gbitmap_create_with_resource(MOCKUP_IMAGE_ID[0]);
+  
+  // Store the original palette
+  original_palette = gbitmap_get_palette(s_mockup_image);
+    
   // Add the mockup window to the main window
   layer_add_child(s_main_window_layer, bitmap_layer_get_layer(s_mockup_layer));
   
@@ -221,6 +286,13 @@ static void init(void) {
     
   // Handle clicks
   window_set_click_config_provider(s_main_window, click_config_provider);
+ 
+    // Initialize Enamel to register App Message handlers and restores settings
+  enamel_init();
+  
+   // Subscribe a handler for a window
+  s_window_event_handle = enamel_settings_received_subscribe(enamel_settings_received_window_handler, s_main_window);
+
   
   // Set handlers to manage the loading and unloading of elements inside the Window
   window_set_window_handlers(s_main_window, (WindowHandlers) {
@@ -232,11 +304,6 @@ static void init(void) {
   window_stack_push(s_main_window, true);
     
   
-  // Initialize Enamel to register App Message handlers and restores settings
-  enamel_init();
-  
-   // Subscribe a handler for a window
-  s_window_event_handle = enamel_settings_received_subscribe(enamel_settings_received_window_handler, s_main_window);
   
   // call pebble-events app_message_open function
   events_app_message_open(); 

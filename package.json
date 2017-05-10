@@ -2,7 +2,7 @@
     "author": "NiVZ",
     "dependencies": {
         "enamel": "^1.0.0",
-        "pebble-clay": "^1.0.0"
+        "pebble-clay": "^1.0.4"
     },
     "keywords": [],
     "name": "claylivepreview",
@@ -36,7 +36,6 @@
         },
         "sdkVersion": "3",
         "targetPlatforms": [
-            "aplite",
             "basalt",
             "chalk"
         ],
